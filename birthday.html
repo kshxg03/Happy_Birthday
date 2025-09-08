@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Happy Birthday!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* GENERAL STYLES */
+      body {
+        font-family: "Caveat", cursive;
+        background: #fff0f5;
+        text-align: center;
+        padding: 20px;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      /* RESPONSIVE TITLE */
+      h1 {
+        font-size: clamp(
+          1.5rem,
+          8vw,
+          3rem
+        ); /* scales with viewport but stays between 1.5rem and 3rem */
+        color: #ff69b4;
+        margin-bottom: 10px;
+        animation: pulse 1s infinite alternate;
+      }
+
+      @keyframes pulse {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.05);
+          color: #ff1493;
+        }
+      }
+
+      /* POLAROID GALLERY */
+      .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      .polaroid {
+        background: white;
+        padding: 10px;
+        width: 30vw; /* responsive width */
+        max-width: 200px; /* prevent too wide on desktop */
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        transform: rotate(-2deg);
+        transition: transform 0.3s ease;
+        opacity: 0;
+        animation: fadeInUp 1s forwards;
+      }
+
+      .polaroid:nth-child(1) {
+        animation-delay: 0.3s;
+      }
+      .polaroid:nth-child(2) {
+        animation-delay: 0.6s;
+      }
+      .polaroid:nth-child(3) {
+        animation-delay: 0.9s;
+      }
+
+      .polaroid img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+
+      .polaroid:hover {
+        transform: rotate(0deg) scale(1.05);
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0) rotate(-2deg);
+        }
+      }
+
+      /* MESSAGE TEXT */
+      .message {
+        margin-top: 30px;
+        font-size: 1.5rem;
+        color: #333;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* CANVAS FOR CONFETTI */
+      #confetti {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      /* FALLING HEARTS */
+      .heart {
+        position: fixed;
+        top: -20px;
+        z-index: 9999;
+        animation-name: fall;
+        animation-timing-function: linear;
+      }
+
+      @keyframes fall {
+        to {
+          transform: translateY(100vh) rotate(360deg);
+        }
+      }
+
+      /* MOBILE RESPONSIVENESS */
+      @media screen and (max-width: 768px) {
+        h1 {
+          font-size: 5vw;
+        }
+        .polaroid {
+          width: 40vw;
+        }
+        .message {
+          font-size: 1.2rem;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        h1 {
+          font-size: 12vw;
+        }
+        .polaroid {
+          width: 60vw;
+        }
+        .message {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Happy 16th Birthday, My Baby 🎉💖</h1>
+
+    <canvas id="confetti"></canvas>
+
+    <div class="gallery">
+      <div class="polaroid">
+        <img src="images/IMG_5922.jpeg" alt="Photo 1" />
+      </div>
+      <div class="polaroid">
+        <img src="images/IMG_5913.jpeg" alt="Photo 2" />
+      </div>
+      <div class="polaroid">
+        <img src="images/IMG_5924.jpeg" alt="Photo 3" />
+      </div>
+    </div>
+
+    <div class="message">
+      <p>
+        Wishing you the happiest 16th birthday! 🎂✨ You are the most special
+        person in my life, and I’m so lucky to celebrate this day with you. May
+        your life be filled with love, joy, and endless smiles. 💖
+      </p>
+    </div>
+
+    <script>
+      /* FALLING HEARTS */
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        document.body.appendChild(heart);
+
+        heart.style.left = Math.random() * 100 + "vw";
+
+        const duration = Math.random() * 3 + 2; // 2–5s
+        const size = Math.random() * 20 + 15;
+        heart.style.fontSize = size + "px";
+        heart.style.animationDuration = duration + "s";
+
+        setTimeout(() => heart.remove(), duration * 1000);
+      }
+
+      setInterval(createHeart, 300);
+
+      /* CONFETTI */
+      const confetti = document.getElementById("confetti");
+      const ctx = confetti.getContext("2d");
+      confetti.width = window.innerWidth;
+      confetti.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ["#ff69b4", "#ffd700", "#87ceeb", "#ff4500", "#32cd32"];
+
+      function createParticle() {
+        particles.push({
+          x: Math.random() * confetti.width,
+          y: 0,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speed: Math.random() * 3 + 2,
+          drift: (Math.random() - 0.5) * 2,
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, confetti.width, confetti.height);
+        particles.forEach((p, i) => {
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, p.size, p.size);
+          p.y += p.speed;
+          p.x += p.drift;
+          if (p.y > confetti.height) particles.splice(i, 1);
+        });
+      }
+
+      setInterval(createParticle, 150);
+      setInterval(draw, 20);
+
+      /* RESIZE CANVAS ON WINDOW RESIZE */
+      window.addEventListener("resize", () => {
+        confetti.width = window.innerWidth;
+        confetti.height = window.innerHeight;
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #ffe6e6;
+        margin: 0;
+        font-family: sans-serif;
+      }
+
+      .cake {
+        position: relative;
+        width: 200px;
+        height: 150px;
+        background: #ff99cc;
+        border-radius: 10px;
+        box-shadow: inset 0 -20px #cc6699;
+      }
+
+     .candle {
+  position: relative;  /* key: positions flame & smoke correctly */
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 60px;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.flame {
+  position: absolute;
+  bottom: 100%;   /* flame sits on candle tip */
+  transform: translateX(-50%);
+  width: 20px;
+  height: 40px;
+  background: radial-gradient(ellipse at center, yellow 0%, orange 70%, red 100%);
+  border-radius: 50%;
+  animation: flicker 0.15s infinite alternate;
+  opacity: 1;
+  transition: opacity 0.8s ease; /* so it can fade */
+}
+
+
+
+/* flicker animation for the flame */
+@keyframes flicker {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(1.1); }
+  100% { transform: scaleY(0.9); }
+}
+
+.smoke {
+  position: absolute;
+  bottom: 100%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: rgba(200, 200, 200, 0.7);
+  border-radius: 50%;
+  opacity: 0;
+  animation: rise 2s forwards;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateX(-50%) translateY(0) scale(0.5);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateX(-60%) translateY(-40px) scale(1.2);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(-70%) translateY(-80px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+
+      .text_body {
+        font-family: "Caveat", cursive;
+        font-size: 2rem;
+        font-weight: 400;
+        font-style: normal;
+        color: #c9184a;
+      }
