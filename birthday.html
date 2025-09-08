@@ -11,13 +11,22 @@
     />
     <style>
       /* GENERAL STYLES */
-      body {
-        font-family: "Caveat", cursive;
-        background: #fff0f5;
-        text-align: center;
-        padding: 20px;
+      body,
+      html {
+        height: 100%;
         margin: 0;
-        overflow-x: hidden;
+        background-color: #ffe6e6;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* vertical center */
+        align-items: center; /* horizontal center */
+        min-height: 100vh; /* full viewport height */
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: center;
       }
 
       /* RESPONSIVE TITLE */
@@ -119,6 +128,22 @@
         animation-timing-function: linear;
       }
 
+      .text_body {
+        font-family: "Caveat", cursive;
+        font-size: 2rem;
+        font-weight: 400;
+        font-style: normal;
+        color: #c9184a;
+      }
+      .balloon {
+        position: fixed;
+        width: 30px;
+        height: 40px;
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        pointer-events: none;
+        z-index: 10000;
+      }
+
       @keyframes fall {
         to {
           transform: translateY(100vh) rotate(360deg);
@@ -152,28 +177,30 @@
     </style>
   </head>
   <body>
-    <h1>Happy 16th Birthday, My Baby 🎉💖</h1>
+    <div class="container">
+      <h1>Happy 16th Birthday, My Baby 🎉💖</h1>
 
-    <canvas id="confetti"></canvas>
+      <canvas id="confetti"></canvas>
 
-    <div class="gallery">
-      <div class="polaroid">
-        <img src="images/IMG_5922.jpeg" alt="Photo 1" />
+      <div class="gallery">
+        <div class="polaroid">
+          <img src="images/IMG_5922.jpeg" alt="Photo 1" />
+        </div>
+        <div class="polaroid">
+          <img src="images/IMG_5913.jpeg" alt="Photo 2" />
+        </div>
+        <div class="polaroid">
+          <img src="images/IMG_5924.jpeg" alt="Photo 3" />
+        </div>
       </div>
-      <div class="polaroid">
-        <img src="images/IMG_5913.jpeg" alt="Photo 2" />
-      </div>
-      <div class="polaroid">
-        <img src="images/IMG_5924.jpeg" alt="Photo 3" />
-      </div>
-    </div>
 
-    <div class="message">
-      <p>
-        Wishing you the happiest 16th birthday! 🎂✨ You are the most special
-        person in my life, and I’m so lucky to celebrate this day with you. May
-        your life be filled with love, joy, and endless smiles. 💖
-      </p>
+      <div class="text_body">
+        <p>
+          Wishing you the happiest 16th birthday! 🎂✨ You are the most special
+          person in my life, and I’m so lucky to celebrate this day with you.
+          May your life be filled with love, joy, and endless smiles. 💖
+        </p>
+      </div>
     </div>
 
     <script>
@@ -234,6 +261,35 @@
       window.addEventListener("resize", () => {
         confetti.width = window.innerWidth;
         confetti.height = window.innerHeight;
+      });
+
+      function createBalloon(x, y) {
+        const balloon = document.createElement("div");
+        balloon.classList.add("balloon");
+        balloon.style.left = x + "px";
+        balloon.style.top = y + "px";
+
+        const colors = ["#ff69b4", "#ffd700", "#87ceeb", "#ff4500", "#32cd32"];
+        balloon.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+
+        document.body.appendChild(balloon);
+
+        // Animate upward
+        const duration = Math.random() * 3 + 3; // 3–6s
+        balloon.style.transition = `transform ${duration}s linear, opacity ${duration}s`;
+        requestAnimationFrame(() => {
+          balloon.style.transform = `translateY(-100vh)`;
+          balloon.style.opacity = 0;
+        });
+
+        // Remove after animation
+        setTimeout(() => balloon.remove(), duration * 1000);
+      }
+
+      // Create balloon on click
+      document.body.addEventListener("click", (e) => {
+        createBalloon(e.clientX, e.clientY);
       });
     </script>
   </body>
